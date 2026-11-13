@@ -58,3 +58,6 @@ Evaluating any trained model (SFT, DPO, GRPO) on validation, and running the too
 
 ## What cannot be rerun
 - `python -m preference_lab.final_test` refuses to run: `runs/test-results/` exists and the held-out test has been used. Do not tune against it. A new model should be judged on a newly generated validation set and a separately frozen new test.
+
+## Verification record (review pass)
+Checked on commit `f2c7392` in a temporary clone of the committed repository: lock-file installs (uv and pip) matched the 53 pinned packages; 59 tests passed; the audit was clean; `splits build` and `pairs` reproduced the tracked data byte for byte; `demo`, `test_analysis --check-against`, `agent --scripted` reproduced the tracked outputs; `grpo` failed fast without weights; `final_test` refused to run. Everything marked "can run" above was exercised this way.
