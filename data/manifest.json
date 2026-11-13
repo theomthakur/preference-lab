@@ -1,0 +1,27 @@
+{
+  "files": {
+    "pool": {
+      "groups": 1000,
+      "rows": 1000,
+      "sha256": "17a7f13e39658a5573f7adfc67c17edc78dfae7c1a2c1cf38aac83c202b8ca95"
+    },
+    "sft": {
+      "groups": 400,
+      "rows": 400,
+      "sha256": "0f3f0841e997eb04771c358ebaa94e31c9d2c479a73ded492d176f4986c0d5b1"
+    },
+    "test": {
+      "groups": 400,
+      "rows": 800,
+      "sha256": "e7607de8a8f33475cf9a24ee7542076fbfbd442c062c595b2af4de1eba151a95"
+    },
+    "val": {
+      "groups": 200,
+      "rows": 200,
+      "sha256": "0e7a3be75e11c49716db18e7e032625f584b0e24bfd362c1bdc9865681082e50"
+    }
+  },
+  "generator_version": "1.0",
+  "label_origin": "synthetic rule oracle, not human judgments",
+  "seed": 7
+}

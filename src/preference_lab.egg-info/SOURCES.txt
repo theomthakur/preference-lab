@@ -1,0 +1,13 @@
+pyproject.toml
+src/preference_lab/__init__.py
+src/preference_lab/data.py
+src/preference_lab/doctor.py
+src/preference_lab/oracle.py
+src/preference_lab/splits.py
+src/preference_lab.egg-info/PKG-INFO
+src/preference_lab.egg-info/SOURCES.txt
+src/preference_lab.egg-info/dependency_links.txt
+src/preference_lab.egg-info/requires.txt
+src/preference_lab.egg-info/top_level.txt
+tests/test_data.py
+tests/test_oracle.py

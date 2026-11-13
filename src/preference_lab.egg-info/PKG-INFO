@@ -1,0 +1,14 @@
+Metadata-Version: 2.4
+Name: preference-lab
+Version: 0.1.0
+Summary: Small, reproducible post-training experiment: synthetic data, SFT, DPO, GRPO, verifiers, evaluation.
+Requires-Python: <3.13,>=3.12
+Requires-Dist: torch
+Requires-Dist: transformers
+Requires-Dist: trl
+Requires-Dist: peft
+Requires-Dist: datasets
+Requires-Dist: accelerate
+Requires-Dist: pyyaml
+Requires-Dist: numpy
+Requires-Dist: pytest
