@@ -15,8 +15,8 @@ Tick items as they are finished. "Heat" is how hard the item works the laptop.
 
 ## To do
 - [x] 4. Tool environment, traces, tests, scripted runs, real-model attempts (done: 42 tests, 10/10 scripted, base 0/20 and SFT 0/20 on tool episodes; see docs/TOOL-ENVIRONMENT.md)
-- [ ] 5. GRPO speed test, then bounded real run (45-90 min, heat: HEAVY, needs Om's OK first)
-- [ ] 6. Evaluate GRPO on validation (10 min, heat: light)
+- [x] 5. GRPO speed test (65 s for 10 updates) and bounded run (32 updates, 204 s). Reward signal stayed flat; see docs/GRPO.md
+- [x] 6. Evaluate GRPO on validation: 23/200 (SFT 25/200), no improvement; see docs/GRPO.md
 - [ ] 7. Freeze configs, run the held-out test once, with intervals (30 min, heat: medium, needs Om's OK first)
 - [ ] 8. RESULTS.md, DATA-CARD.md, MODEL-CARD.md (1.5 h, heat: none)
 - [ ] 9. Architecture diagram, interview walkthrough, five-minute demo (1 h, heat: none)

@@ -25,6 +25,7 @@ A small rule oracle (`oracle.py`) decides the right answer. A score of "correct"
 | SFT, 5 epochs | 25 / 200 (12.5%) | 60% | 16.5% |
 | DPO from the SFT model (clean pairs) | 29 / 200 (14.5%) | 61.5% | 18% |
 | DPO from the SFT model (20% flipped pairs) | 26 / 200 (13.0%) | 64.5% | 14% |
+| GRPO from the SFT model (32 updates) | 23 / 200 (11.5%) | 59.5% | 15.5% |
 
 Read this carefully:
 - The base model answers DENY about 80% of the time and never cites evidence.
@@ -62,7 +63,8 @@ python -m preference_lab.pairs           # clean and corrupted preference pairs
 python -m preference_lab.evaluate --split val --name base
 python -m preference_lab.sft --name sft --epochs 5 --batch 8 --micro 2
 python -m preference_lab.dpo --name dpo-clean --pairs data/pairs_clean.jsonl
-python -m pytest                         # 42 tests
+python -m preference_lab.grpo --name grpo-speed --max-steps 10   # GRPO speed test
+python -m pytest                         # 43 tests
 python -m preference_lab.agent --scripted --name env-scripted   # tool-environment harness check
 ```
 
