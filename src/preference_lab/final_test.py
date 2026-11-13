@@ -4,6 +4,11 @@
 
 Outputs: runs/test-results/{predictions_<model>.jsonl, test_metrics.json, intervals.json, FREEZE.json}.
 Intervals: group-level bootstrap (resample whole groups, because each group appears in two rendered rows), 2,000 resamples, seed 7.
+
+PROVENANCE NOTE (read before relying on this file). This script was run once on 13 Nov 2026. All five models finished and wrote their
+predictions, then the analysis block at the bottom raised KeyError (group_bootstrap was given a subset of rows but looked up every row
+of each group). The code below is left exactly as it was run. The numbers in runs/test-results/test_metrics.json were produced by
+src/preference_lab/test_analysis.py reading the saved predictions, with no model rerun. A rerun of this file is blocked by design.
 """
 from __future__ import annotations
 import json, random, subprocess, time

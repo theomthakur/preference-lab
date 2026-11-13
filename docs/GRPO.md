@@ -13,7 +13,7 @@
 - 204.1 s, 6.38 s per update, 256 sampled completions in total.
 - Mean reward in the first 8 updates: 0.078. In the last 8 updates: 0.078.
 - Share of update groups with zero reward variance (nothing to learn from): 0.88 on average.
-- Reading: with the SFT model only about 12% correct, most groups of four samples fail together, so GRPO has almost no signal. The run did not learn in 32 updates. This was not fixed by inventing variance, which the plan forbids.
+- Reading: with the SFT model only about 12% correct, most groups of four samples had the same reward, so most updates carried little learning signal. That is a plausible contributor to the flat result, but it was not tested as the cause; the learning rate, the number of updates, the small LoRA and the KL term could also matter. The run did not learn in 32 updates. No variation was invented to force learning, which the plan forbids.
 
 ## Validation (200 cases, same decoding as the other models)
 | Model | Strict correct | Right action | Exact evidence |

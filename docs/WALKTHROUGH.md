@@ -8,7 +8,7 @@ Second, the training. I started with a small model, Qwen 0.5B. The first supervi
 
 Third, preference training. I built pairs where the wrong answer is valid JSON but has the wrong action or the wrong evidence, so formatting cannot give it away. DPO used a frozen copy of the SFT model as its reference. I also flipped 20% of the labels as a control. Neither DPO run beat the SFT model beyond noise.
 
-Fourth, GRPO. I merged the SFT weights first, so the frozen reference really is the SFT model. The speed test took about a minute for ten updates on my laptop. In 32 updates the reward stayed almost flat, because most groups of four samples failed together, so there was nothing to learn from. I didn't fake a signal.
+Fourth, GRPO. I merged the SFT weights first, so the frozen reference really is the SFT model. The speed test took about a minute for ten updates on my laptop. In 32 updates the reward stayed almost flat, and most groups of four samples had no difference in reward, so most updates carried little signal. I think that is a likely contributor, but I didn't test it, so I treat it as a hypothesis. I didn't fake a signal.
 
 Fifth, the test. I froze the code and configs in a commit, then ran the held-out test once. Every trained model clearly beats the untrained base. None of the preference or RL steps beat SFT. Accuracy roughly halves on new wording, so the models partly memorize phrasing.
 

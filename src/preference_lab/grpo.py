@@ -19,11 +19,18 @@ from .splits import load
 from .data import SYSTEM as ANSWER_SYSTEM
 
 MERGED = Path("runs/sft-merged")
+SFT_ADAPTER = Path("runs/sft/adapter")
 
 
 def merge_sft():
-    if (MERGED / "config.json").exists():
+    """Make sure the merged SFT model exists. The check is for the WEIGHTS file, not config.json: config and tokenizer files are
+    tracked in git but the 1.9 GB weights are not, so a fresh clone has config.json and no weights."""
+    if (MERGED / "model.safetensors").exists():
         return
+    if not (SFT_ADAPTER / "adapter_model.safetensors").exists():
+        raise FileNotFoundError(
+            f"cannot build {MERGED}: the SFT adapter weights {SFT_ADAPTER}/adapter_model.safetensors are not present. "
+            "Adapter weights are not stored in git. Retrain SFT first: python -m preference_lab.sft --name sft --epochs 5 --batch 8 --micro 2")
     from peft import PeftModel
     from transformers import AutoModelForCausalLM, AutoTokenizer
     base = AutoModelForCausalLM.from_pretrained(MODEL, revision=REVISION, dtype=torch.float32)
