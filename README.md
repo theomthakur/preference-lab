@@ -23,13 +23,14 @@ A small rule oracle (`oracle.py`) decides the right answer. A score of "correct"
 | Base (Qwen2.5-0.5B-Instruct) | 0 / 200 | 27.5% | 0% |
 | SFT, 1 epoch | 0 / 200 | 35% | 1% |
 | SFT, 5 epochs | 25 / 200 (12.5%) | 60% | 16.5% |
-| DPO from the SFT model | 29 / 200 (14.5%) | 61.5% | 18% |
+| DPO from the SFT model (clean pairs) | 29 / 200 (14.5%) | 61.5% | 18% |
+| DPO from the SFT model (20% flipped pairs) | 26 / 200 (13.0%) | 64.5% | 14% |
 
 Read this carefully:
 - The base model answers DENY about 80% of the time and never cites evidence.
 - One epoch of SFT taught the format but collapsed to nearly always ACCEPT. Five epochs was chosen **after** seeing the validation result, so it is a validation-driven change to the original plan. Both runs are kept.
 - DPO's gain over SFT is 4 cases out of 200 (11 wins, 7 losses on the same cases). That is within noise, so it is **not** shown to be better. It also shifted the model toward HOLD.
-- The DPO run on 20% corrupted preference labels has trained but is not evaluated yet.
+- Flipping 20% of the preference labels made no detectable difference: clean DPO beat corrupted DPO on 8 cases and lost on 5 (sign test p = 0.58). With 200 cases and one seed, small effects cannot be seen.
 - The held-out test set has not been touched. These numbers are validation only, from one seed.
 
 ## How it is built
@@ -48,7 +49,7 @@ Scenario generator + independent rule oracle
 
 - Test cases include a held-out phrasing template and policy values never seen in training.
 - Preference pairs use hard negatives (wrong action, missing, extra or made-up evidence), all valid JSON.
-- The cross-check: a second, separately written oracle agrees with the first on every generated row.
+- The cross-check: a second, separately written oracle agrees with the first on every generated row, and a hand review of 40 rows (`docs/HAND-REVIEW.md`) found 40 of 40 agreements.
 
 ## Run it
 
