@@ -1,0 +1,15 @@
+{
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "init": "runs/sft/adapter",
+  "reference": "frozen copy of the SFT adapter",
+  "beta": 0.1,
+  "lr": 5e-05,
+  "batch": 8,
+  "epochs": 1,
+  "pairs": "data/pairs_corrupt.jsonl",
+  "n_pairs": 1000,
+  "seed": 7,
+  "loss": "sigmoid DPO",
+  "step0_logp_diff": 0.0
+}
