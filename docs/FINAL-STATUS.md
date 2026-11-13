@@ -32,7 +32,18 @@
 - Retraining from scratch on another machine has not been verified to give the same numbers. The trained weights are not in GitHub.
 - Linux, CUDA and CPU were not tested. The lock file was produced on macOS arm64.
 - Known housekeeping: `src/preference_lab.egg-info/` is tracked in git and changes when the package is installed. Untracking it is proposed, not done.
-- A read-only dashboard (`web/`, `vercel.json`) was committed by a separate tool session while this review was running (commit `b4e4207`). It was not created or reviewed in this pass. Its `data.json` is derived from saved results and has not been checked against `test_metrics.json`. This pass made no deployment.
+- Dashboard: see the dashboard pass below. Not verified there: a real Vercel deployment, other browsers, screen readers, real touch devices.
+
+## Dashboard pass (what changed and why)
+- Chart footnote now names both DPO variants (it said only "clean"). Each bar shows the saved 95% group-bootstrap interval on a fixed axis, with a plain explanation of the zero-success case (the bootstrap interval is always [0, 0]; an exact upper bound is shown as supplementary arithmetic, labelled as not part of the saved metrics).
+- A seen vs held-out wording toggle on the chart, a paired-differences table (a difference reads as higher or lower only when its interval excludes zero), and a link from each case to the same case in the other wording.
+- Every number and conclusion on the page is derived from `data.json`, so the text cannot disagree with the results. It makes no claim that DPO or GRPO improved on SFT.
+- `web/generate_data.py` now validates group, template, label, rule, split, novel-values flag and evidence ids for every prediction against the source case, recomputes every saved accuracy and paired difference exactly, records source hashes, and has a `--check` mode. A test requires the committed `data.json` to be byte-identical to a fresh build. (The old script let a swap of two rows' group ids through; I tested that in a temporary clone before fixing it.) While validating paired differences it showed that 0.0038 in the saved metrics is the float subtraction of two unrounded accuracies (3/800 sits exactly on a rounding tie), so the validator uses the same arithmetic as the analysis tool. The saved metrics were not changed.
+- Keyboard focus is no longer lost: tabs, case items and slide dots keep focus, state lives in `aria-current` and `aria-pressed`, end-of-list buttons use `aria-disabled`, and there is a skip link, a status region, arrow-key navigation for slides, and focus moved to headings when a view or case opens.
+- One stylesheet replaces three stacked palettes and dead rules. All text is at least 12 px, every interactive target at least 44 px, text contrast meets WCAG AA, control borders meet 3:1, and nothing animates (smooth scrolling is used only without a reduced-motion preference). The mobile header is a two-row layout with all three tabs visible.
+- Overview, System design and Presentation remain separate tabs. Repeated copy was removed (the stat strip, the decorative hero illustration, duplicated caveats, one design note); the presentation stays at five slides.
+- `vercel.json` adds security headers including a strict Content-Security-Policy; `.vercelignore` keeps sources and weights out of a CLI upload.
+- No saved prediction, metric or test file was changed: SHA-256 hashes of `runs/test-results/*` and `data/test.jsonl` were identical before and after.
 
 ## Optional, not done
 - Prompt-injection robustness slice

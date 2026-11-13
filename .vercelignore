@@ -1,0 +1,14 @@
+# Only web/ is served (see vercel.json). Keep everything else out of a CLI deploy, and never upload model weights.
+.venv
+.git
+runs
+src
+tests
+docs
+data
+__pycache__
+.pytest_cache
+*.safetensors
+*.bin
+web/generate_data.py
+web/README.md

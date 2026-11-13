@@ -1,8 +1,197 @@
 <!doctype html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="A transparent, read-only exploration of a small post-training experiment."><meta name="theme-color" content="#f9f7f2"><title>Preference Lab — an experiment in better answers</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet"><link rel="icon" type="image/svg+xml" href="./favicon.svg"><link rel="stylesheet" href="./style.css"><script defer src="./app.js"></script></head>
-<body><header class="top"><a class="brand" href="#overview" aria-label="Preference Lab home"><img class="brand-icon" src="./favicon.svg" width="37" height="37" alt=""><span>preference<span class="brand-light">lab</span><small>AN OPEN EXPERIMENT</small></span></a><nav aria-label="Main navigation"><a href="#overview" data-view-link="overview">Overview</a><a href="#system-design" data-view-link="system-design">System design</a><a href="#presentation" data-view-link="presentation">Presentation</a></nav><a class="repo" href="https://github.com/theomthakur/preference-lab" target="_blank" rel="noreferrer">View on GitHub <span>↗</span></a></header>
-<main><section class="hero wrap" id="overview"><div class="hero-copy"><div class="eyebrow"><span class="dot"></span> A SMALL EXPERIMENT IN POST-TRAINING <span class="sep">/</span> 01</div><h1>Can we train for<br><em>better answers?</em></h1><p>We tested whether post-training helps a small language model make return decisions and cite the evidence behind them. Explore the saved results and see what worked—and what did not.</p><div class="hero-links"><a href="#explore" class="primary">Explore the results <span>↗</span></a><a href="#system-design" class="text-link">How it works <span>↓</span></a></div></div><div class="hero-visual" aria-label="Illustration of the evaluation process"><div class="visual-top"><span>THE EXPERIMENT</span><span>✳</span></div><div class="diagram"><div class="diagram-box ticket"><span>01 / THE INPUT</span><b>A return request</b><small>Policy + customer facts</small><div class="fake-line"></div><div class="fake-line short"></div></div><div class="connector"><i></i><span>↘</span><span>↗</span></div><div class="model-stack"><div><span>02 / THE MODEL</span><b>Read & reason</b><small>Base · SFT · DPO · GRPO</small></div><div><span>03 / THE CHECK</span><b>Decision + evidence</b><small>Scored against a rule oracle</small></div></div></div><div class="visual-bottom"><span><i></i> SYNTHETIC DATA</span><span>READ-ONLY STUDY ↗</span></div></div></section>
-<section class="strip"><div class="wrap strip-inner"><div><strong>0.5B</strong><span>PARAMETER MODEL</span></div><div><strong>4</strong><span>MODEL APPROACHES</span></div><div><strong>400</strong><span>HELD-OUT GROUPS</span></div><div><strong>1</strong><span>TRAINING SEED</span></div><p><span>●</span> A learning experiment, not a benchmark</p></div></section>
-<section class="wrap section results"><div class="section-heading"><div><div class="eyebrow">THE RESULTS <span class="sep">/</span> 02</div><h2>So, what changed?</h2><p>Strict accuracy on the same held-out test. An answer passes only when both its decision and exact supporting evidence are correct.</p></div><div class="data-tag"><span>●</span> FROZEN TEST SET<br><small>800 rows · 400 groups</small></div></div><div class="results-grid"><div class="chart-card"><div class="card-top"><div><h3>Strict answer accuracy</h3><p>One seed · greedy decoding · synthetic cases</p></div><span class="chip">HELD-OUT TEST</span></div><div id="bars" class="bars" aria-live="polite"></div><div class="chart-foot">Percent of cases with both the correct action and exact evidence. DPO shown with clean preference pairs.</div></div><aside class="insight"><span class="insight-icon">✳</span><div class="eyebrow">THE HONEST TAKEAWAY</div><h3>Training helped.<br><em>Preferences didn’t clearly add more.</em></h3><p>GRPO scored highest numerically at 12.0% (96/800), compared with SFT at 11.75% (94/800). The paired difference is uncertain: this does not establish a GRPO improvement over SFT.</p><a href="https://github.com/theomthakur/preference-lab/blob/main/RESULTS.md" target="_blank" rel="noreferrer">Read the full results ↗</a></aside></div><p class="metric-note">Confidence intervals are group-bootstrap estimates. A zero-success bootstrap interval is not proof that the true error rate is exactly zero. <a href="#system-design">See methodology ↓</a></p></section>
-<section id="explore" class="explore-section"><div class="wrap section"><div class="section-heading"><div><div class="eyebrow">LOOK A LITTLE CLOSER <span class="sep">/</span> 03</div><h2>See the answers for yourself.</h2><p>Explore saved, synthetic held-out examples. Nothing here calls a model or runs an evaluation.</p></div><div class="data-tag"><span>●</span> SAVED PREDICTIONS<br><small>Browse, don’t benchmark</small></div></div><div class="explorer"><div class="explorer-sidebar"><div class="side-title"><span>CASE EXPLORER</span><span id="case-count">—</span></div><label for="filter">FILTER CASES</label><select id="filter"><option value="all">All cases</option><option value="success">SFT correct</option><option value="action">SFT wrong action</option><option value="evidence">SFT wrong evidence</option><option value="disagree">SFT / DPO disagree</option></select><div id="case-list" class="case-list"></div><div class="pager"><button id="prev" aria-label="Previous cases">←</button><span id="page-label"></span><button id="next" aria-label="Next cases">→</button></div></div><div class="case-main"><div id="case-content"><p class="loading">Loading saved cases…</p></div></div></div></div></section>
-<section class="wrap section architecture-section" id="system-design"><div class="section-heading"><div><div class="eyebrow">UNDER THE HOOD <span class="sep">/</span> 04</div><h2>From a question to a result.</h2><p>A small, reproducible post-training pipeline. Follow the data through training, evaluation and the evidence on this page.</p></div><div class="data-tag"><span>●</span> SYSTEM DESIGN<br><small>one experiment · two tracks</small></div></div><div class="architecture"><div class="arch-intro"><div><span class="arch-kicker">THE PIPELINE</span><h3>Train, then verify.</h3></div><p>Each stage has a distinct job. The final held-out cases were evaluated once after the models were frozen.</p></div><div class="arch-flow"><article><span>01</span><b>Generate &amp; split</b><p>Make synthetic policy scenarios. An oracle supplies reference decisions; grouped splits reduce leakage.</p><small>400 SFT · 1,000 PAIR POOL</small></article><div class="arch-arrow">→</div><article><span>02</span><b>Train variants</b><p>Start with a 0.5B base model. Train SFT, then compare DPO pairs and verifier-reward GRPO.</p><small>BASE → SFT → DPO / GRPO</small></article><div class="arch-arrow">→</div><article><span>03</span><b>Score &amp; inspect</b><p>The same checker grades action and exact evidence. Saved predictions feed paired comparisons.</p><small>400 HELD-OUT GROUPS</small></article></div><div class="stack-panel"><div><span class="arch-kicker">TECH STACK</span><h3>Built on a laptop.</h3></div><div class="stack-items"><span><b>Model</b> Qwen2.5-0.5B-Instruct</span><span><b>Training</b> Python · PyTorch · Transformers · TRL · PEFT / LoRA</span><span><b>Evaluation</b> Python · NumPy · JSONL · rule-based verifier</span><span><b>Hardware</b> Apple M4 · 16 GB · PyTorch MPS</span><span><b>Dashboard</b> HTML · CSS · JavaScript · static JSON</span></div></div><div class="arch-bottom"><span class="arch-badge">SEPARATE TRACK</span><p><b>Tool environment:</b> The base and SFT models were also tested on 20 validation cases requiring tool calls. Both scored 0/20. Trained tool use was not achieved.</p></div></div><div class="design-notes"><article><span>WHY A RULE ORACLE?</span><p>It gives a repeatable reference answer, but the synthetic task reflects the assumptions in its rules.</p></article><article><span>WHY PAIRED EVALUATION?</span><p>Every model sees the same cases, so we can compare their answers case by case.</p></article><article><span>WHAT REMAINS UNCERTAIN?</span><p>One seed, a small model, and synthetic data limit generalization. The trained weights are not in GitHub.</p></article></div></section><section class="presentation-section" id="presentation"><div class="wrap section"><div class="section-heading"><div><div class="eyebrow">THE SHORT VERSION <span class="sep">/</span> 05</div><h2>The story in five slides.</h2><p>A short walkthrough of the problem, the experiment and what the results actually say.</p></div></div><div class="deck" aria-label="Preference Lab presentation"><div class="deck-top"><span>PREFERENCE LAB / RESEARCH NOTES</span><span id="slide-counter">01 / 05</span></div><div class="slide-body" id="slide-body" aria-live="polite"></div><div class="deck-bottom"><div class="deck-dots" id="slide-dots" aria-label="Choose slide"></div><div class="deck-controls"><button id="slide-prev" aria-label="Previous slide">←</button><button id="slide-next" aria-label="Next slide">→</button></div></div></div></div></section></main><footer><div class="wrap footer-inner"><a class="brand footer-brand" href="#overview"><img class="brand-icon" src="./favicon.svg" width="37" height="37" alt=""><span>preference<span class="brand-light">lab</span></span></a><span>Made to ask better questions about model behavior.</span><a href="https://github.com/theomthakur/preference-lab" target="_blank" rel="noreferrer">Explore the repository ↗</a></div></footer></body></html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A read-only look at a small post-training experiment: what the held-out test found, and the saved answers behind it.">
+<meta name="theme-color" content="#faf8f3">
+<title>Overview | Preference Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
+<link rel="stylesheet" href="./style.css">
+<script defer src="./app.js"></script>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="top">
+  <a class="brand" href="#overview" aria-label="Preference Lab, overview">
+    <img class="brand-icon" src="./favicon.svg" width="40" height="40" alt="">
+    <span class="brand-name">preference<span class="brand-light">lab</span></span>
+  </a>
+  <nav aria-label="Views">
+    <a href="#overview" data-view-link="overview">Overview</a>
+    <a href="#system-design" data-view-link="system-design">System design</a>
+    <a href="#presentation" data-view-link="presentation">Presentation</a>
+  </nav>
+  <a class="repo" href="https://github.com/theomthakur/preference-lab" target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+</header>
+
+<main id="main" tabindex="-1">
+
+<!-- ============ OVERVIEW ============ -->
+<div class="view" id="overview" data-view="overview">
+  <section class="hero wrap" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <p class="eyebrow">A small experiment in post-training</p>
+      <h1 id="hero-title" tabindex="-1">Can we train for better answers?</h1>
+      <p class="lede">A 0.5B-parameter model learns to decide fictional return requests and to cite the exact lines that justify each decision. This page shows what the frozen test found, including what did not work.</p>
+      <div class="hero-links">
+        <a href="#explore" class="btn primary">Explore the saved answers</a>
+        <a href="#system-design" class="btn ghost">How it works</a>
+      </div>
+    </div>
+    <aside class="glance" aria-labelledby="glance-title">
+      <h2 id="glance-title" class="glance-title">Findings at a glance</h2>
+      <ol class="glance-list" id="glance"><li>Loading the saved results…</li></ol>
+      <p class="glance-foot">Synthetic data, a small model and one training seed. This is a learning experiment, not a benchmark.</p>
+    </aside>
+  </section>
+
+  <section class="wrap section results" id="results" aria-labelledby="results-title">
+    <div class="section-heading">
+      <p class="eyebrow">The frozen test</p>
+      <h2 id="results-title" tabindex="-1">What did the held-out test find?</h2>
+      <p>Strict accuracy: an answer passes only with the right action and exactly the right evidence lines. Every model saw the same test cases.</p>
+    </div>
+
+    <div class="chart-card">
+      <div class="card-top">
+        <div>
+          <h3 id="chart-title">Strict accuracy by model</h3>
+          <p class="card-sub" id="chart-sub">Loading…</p>
+        </div>
+        <fieldset class="seg" aria-describedby="seg-help">
+          <legend>Compare wording</legend>
+          <div class="seg-options">
+            <label><input type="radio" name="wording" value="all_rows" checked><span>All rows</span></label>
+            <label><input type="radio" name="wording" value="seen_template"><span>Seen wording</span></label>
+            <label><input type="radio" name="wording" value="held_out_template"><span>Held-out wording</span></label>
+          </div>
+        </fieldset>
+      </div>
+      <p class="seg-help" id="seg-help">Each test group appears twice: once in wording the model saw during training, once in new wording it did not.</p>
+      <div id="bars" class="bars" role="group" aria-labelledby="chart-title">Loading the saved results…</div>
+      <div id="zero-note" class="zero-note" hidden></div>
+      <p class="chart-foot">The bar is the observed score and the thin line is the 95% group-bootstrap interval. Both DPO variants are shown: one trained on clean preference pairs, one on pairs with 20% of the labels flipped. To compare models, use the paired differences below, because the same test cases were scored for every model.</p>
+    </div>
+
+    <div class="chart-card paired-card">
+      <h3>Paired differences (all rows)</h3>
+      <div class="table-wrap">
+        <table class="paired" id="paired">
+          <caption class="sr-only">Differences in strict accuracy between pairs of models, in percentage points, with 95% intervals</caption>
+          <thead><tr><th scope="col">Comparison</th><th scope="col">Difference</th><th scope="col">95% interval</th><th scope="col">Reading</th></tr></thead>
+          <tbody><tr><td colspan="4">Loading…</td></tr></tbody>
+        </table>
+      </div>
+      <p class="chart-foot">Differences are in percentage points. Four comparisons are shown with no adjustment for multiple comparisons, and each model was trained once.</p>
+    </div>
+  </section>
+
+  <section class="explore-section" id="explore" aria-labelledby="explore-title">
+    <div class="wrap section">
+      <div class="section-heading">
+        <p class="eyebrow">The saved answers</p>
+        <h2 id="explore-title" tabindex="-1">See what each model actually wrote</h2>
+        <p>These are the saved predictions from the frozen test. Nothing on this page runs a model.</p>
+      </div>
+      <div class="explorer">
+        <div class="explorer-sidebar">
+          <div class="side-title"><span>Cases</span><span id="case-count">Loading…</span></div>
+          <label for="filter">Show</label>
+          <select id="filter">
+            <option value="all">All cases</option>
+            <option value="success">SFT strict pass</option>
+            <option value="action">SFT wrong action</option>
+            <option value="evidence">SFT right action, wrong evidence</option>
+            <option value="disagree">SFT and clean DPO differ</option>
+          </select>
+          <label for="wording-filter">Wording</label>
+          <select id="wording-filter">
+            <option value="all">Seen and held-out</option>
+            <option value="seen">Seen wording only</option>
+            <option value="held">Held-out wording only</option>
+          </select>
+          <ul id="case-list" class="case-list" aria-label="Cases"></ul>
+          <div class="pager">
+            <button type="button" id="prev" aria-label="Previous page of cases">←</button>
+            <span id="page-label" aria-live="off"></span>
+            <button type="button" id="next" aria-label="Next page of cases">→</button>
+          </div>
+        </div>
+        <div class="case-main" id="case-main">
+          <div id="case-content"><p class="loading">Loading the saved cases…</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============ SYSTEM DESIGN ============ -->
+<div class="view" id="system-design" data-view="system-design" hidden>
+  <section class="wrap section" aria-labelledby="design-title">
+    <div class="section-heading">
+      <p class="eyebrow">How it works</p>
+      <h2 id="design-title" tabindex="-1">From a question to a result</h2>
+      <p>A small, reproducible pipeline. The held-out cases were scored once, after the models were frozen.</p>
+    </div>
+    <div class="architecture">
+      <ol class="arch-flow">
+        <li><span class="arch-num">1</span><h3>Generate and split</h3><p>Synthetic policy scenarios with a rule oracle for the reference answer. Splits are by case, so no case appears in two splits.</p></li>
+        <li><span class="arch-num">2</span><h3>Train variants</h3><p>Fine-tune a 0.5B base model (SFT). Then try DPO on preference pairs and GRPO with a verifier reward, both starting from SFT.</p></li>
+        <li><span class="arch-num">3</span><h3>Score and inspect</h3><p>One checker grades the action and the exact evidence for every model. Saved predictions feed the paired comparisons.</p></li>
+      </ol>
+      <div class="arch-note"><span class="arch-badge">Separate track</span><p><b>Tool environment.</b> The base and SFT models were also run on 20 validation cases that needed tool calls. Both scored 0 of 20. Trained tool use was not achieved.</p></div>
+    </div>
+    <div class="stack-panel">
+      <h3>Tech stack</h3>
+      <dl class="stack-items">
+        <div><dt>Model</dt><dd>Qwen2.5-0.5B-Instruct</dd></div>
+        <div><dt>Training</dt><dd>Python, PyTorch, Transformers, TRL, PEFT (LoRA)</dd></div>
+        <div><dt>Evaluation</dt><dd>Python, JSONL, a rule-based verifier</dd></div>
+        <div><dt>Hardware</dt><dd>Apple M4, 16 GB, PyTorch MPS</dd></div>
+        <div><dt>Dashboard</dt><dd>Static HTML, CSS and JavaScript over one JSON file</dd></div>
+      </dl>
+    </div>
+    <div class="design-notes">
+      <article><h3>Why a rule oracle?</h3><p>It gives a repeatable reference answer. The task still reflects the assumptions written into its rules.</p></article>
+      <article><h3>Why paired evaluation?</h3><p>Every model answers the same cases, so differences can be compared case by case.</p></article>
+    </div>
+  </section>
+</div>
+
+<!-- ============ PRESENTATION ============ -->
+<div class="view" id="presentation" data-view="presentation" hidden>
+  <section class="wrap section" aria-labelledby="pres-title">
+    <div class="section-heading">
+      <p class="eyebrow">The short version</p>
+      <h2 id="pres-title" tabindex="-1">The story in five slides</h2>
+      <p>Use the buttons or the left and right arrow keys.</p>
+    </div>
+    <div class="deck" role="group" aria-roledescription="carousel" aria-label="Preference Lab presentation, 5 slides" id="deck">
+      <div class="deck-top"><span>Preference Lab</span><span id="slide-counter">Slide 1 of 5</span></div>
+      <div class="slide-body" id="slide-body" aria-live="polite"></div>
+      <div class="deck-bottom">
+        <div class="deck-dots" id="slide-dots" role="group" aria-label="Choose a slide"></div>
+        <div class="deck-controls">
+          <button type="button" id="slide-prev" aria-label="Previous slide">←</button>
+          <button type="button" id="slide-next" aria-label="Next slide">→</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+</main>
+
+<footer>
+  <div class="wrap footer-inner">
+    <span>A read-only view of saved results. No model runs here.</span>
+    <a href="https://github.com/theomthakur/preference-lab" target="_blank" rel="noreferrer">Repository <span aria-hidden="true">↗</span><span class="sr-only">(opens in a new tab)</span></a>
+  </div>
+</footer>
+<div id="status" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

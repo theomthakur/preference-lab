@@ -1,7 +1,8 @@
 # Artifacts: what is in GitHub, what is not, and what a fresh clone can run
 
 ## In GitHub
-- **Code and tests:** `src/preference_lab/`, `tests/` (59 tests), `pyproject.toml`, `requirements.lock.txt`.
+- **Code and tests:** `src/preference_lab/`, `tests/` (88 tests), `pyproject.toml`, `requirements.lock.txt`.
+- **Dashboard (static, read-only):** `web/` (`index.html`, `app.js`, `style.css`, `favicon.svg`, `generate_data.py`, `README.md`, and `data.json`, a 1.2 MB derived copy of the held-out cases, predictions and metrics with a SHA-256 of each source), plus `vercel.json` and `.vercelignore`. `data.json` is derived and checked against the saved files; the saved files stay authoritative.
 - **Documents:** README, RESULTS.md, DATA-CARD.md, MODEL-CARD.md, and `docs/`.
 - **Data (generated, small):** `data/{sft,pool,val,test}.jsonl`, `data/pairs_clean.jsonl`, `data/pairs_corrupt.jsonl`, `data/corruption_flags.json` (kept apart from the learner data), and `data/manifest.json` with a SHA-256 for each split.
 - **Run records** under `runs/<name>/`: configs, usage and timing, training logs, raw predictions (failures included) and metrics, for the base model, SFT (1 and 5 epochs), DPO (clean and corrupted), GRPO (speed test and the 32-update run) and the tool-environment episodes.
@@ -30,7 +31,7 @@ Statuses were checked in a clean checkout of the committed repository (see the e
 
 | Command | Needs | Result |
 |---|---|---|
-| `python -m pytest` | nothing extra | 59 tests pass |
+| `python -m pytest` | nothing extra | 88 tests pass |
 | `python -m preference_lab.splits audit` | tracked data | leakage audit, prints `AUDIT: clean` |
 | `python -m preference_lab.splits build` | nothing extra | regenerates `data/`; the files come out identical to the tracked ones (`git status` stays clean) |
 | `python -m preference_lab.pairs` | tracked data | regenerates the preference pairs; identical to the tracked ones |
@@ -38,6 +39,8 @@ Statuses were checked in a clean checkout of the committed repository (see the e
 | `python -m preference_lab.test_analysis` | tracked predictions | recomputes the test metrics and prints them; writes nothing |
 | `python -m preference_lab.test_analysis --check-against runs/test-results/test_metrics.json` | tracked predictions | confirms the saved metrics match the saved predictions |
 | `python -m preference_lab.agent --scripted --name env-scripted-check` | tracked data | the 10-trajectory harness check; loads no model |
+| `python3 web/generate_data.py --check` | tracked data and predictions (standard library only) | confirms `web/data.json` is byte-identical to a fresh build; writes nothing |
+| `python3 -m http.server 4174 --bind 127.0.0.1 --directory web` | tracked files | serves the dashboard at http://127.0.0.1:4174 |
 
 ## What needs a Hugging Face download but no training
 - `python -m preference_lab.doctor` (about 0.94 GB on first use, then cached).

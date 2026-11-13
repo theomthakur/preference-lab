@@ -50,7 +50,7 @@ The 5-epoch choice was made after seeing the 1-epoch validation result. Both are
 ## Other checks
 - Hand review of 40 oracle decisions by a human reader: 40 of 40 agree (`docs/HAND-REVIEW.md`).
 - Second independently written oracle: agrees on all 1,800 rows (tests).
-- 59 automated tests pass, including tests of the saved-prediction analysis (missing, duplicated and misaligned rows, grouped resampling, and the no-overwrite rule).
+- 88 automated tests pass, including tests of the saved-prediction analysis (missing, duplicated and misaligned rows, grouped resampling, and the no-overwrite rule) and of the dashboard data and static files.
 
 ## Honest notes on the test run
 - The first analysis script crashed after all five models had written their predictions. The cause was a bug in my bootstrap code, not in the models. The models were not rerun. The analysis was rewritten to read the saved predictions (`src/preference_lab/test_analysis.py`), and those predictions are the only test outputs.

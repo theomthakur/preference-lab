@@ -79,8 +79,15 @@ flowchart TD
 - Checks on the oracle: a second, separately written implementation agrees on every generated row, and a hand review of 40 rows (`docs/HAND-REVIEW.md`) found 40 of 40 agreements.
 - Track A (answer directly) covers SFT, DPO and GRPO. Track B runs base and SFT through the tool environment (`docs/TOOL-ENVIRONMENT.md`); trained tool use is not achieved.
 
+## Dashboard
+`web/` is a static, read-only dashboard over the saved held-out results: the chart with 95% intervals and a seen vs held-out wording toggle, the paired differences, and an explorer of every saved answer. It has no backend and runs no model. Its `data.json` is derived from the saved files and checked against them (`python3 web/generate_data.py --check`). See [`web/README.md`](web/README.md).
+
+```bash
+python3 -m http.server 4174 --bind 127.0.0.1 --directory web     # then open http://127.0.0.1:4174
+```
+
 ## What is in this repository, and what is not
-GitHub has the code, 59 tests, the generated data, every run's config, logs, raw predictions and metrics, and the held-out test predictions. It does **not** have model weights: the adapters (17 MB or smaller) and the 1.9 GB merged SFT model are git-ignored. So a fresh clone can rerun the data pipeline, the tests, the demo and the saved-prediction analysis, but cannot evaluate the trained models without retraining them. The full inventory and the exact list of what runs from a fresh clone is in [`docs/ARTIFACTS.md`](docs/ARTIFACTS.md).
+GitHub has the code, 88 tests, the generated data, every run's config, logs, raw predictions and metrics, and the held-out test predictions. It does **not** have model weights: the adapters (17 MB or smaller) and the 1.9 GB merged SFT model are git-ignored. So a fresh clone can rerun the data pipeline, the tests, the demo and the saved-prediction analysis, but cannot evaluate the trained models without retraining them. The full inventory and the exact list of what runs from a fresh clone is in [`docs/ARTIFACTS.md`](docs/ARTIFACTS.md).
 
 ## Requirements
 - **Hardware used:** Apple M4, 16 GB, macOS, GPU through PyTorch MPS. Measured peak GPU memory was 5.7 GB for SFT, 6.5 GB for DPO and 7.2 GB for GRPO. Linux, CUDA and CPU were not tested.
@@ -92,7 +99,7 @@ GitHub has the code, 59 tests, the generated data, every run's config, logs, raw
 uv venv --python 3.12 .venv && source .venv/bin/activate
 uv pip sync requirements.lock.txt        # installs exactly the pinned versions, removes anything else
 uv pip install -e . --no-deps            # the project itself, without re-resolving dependencies
-python -m pytest                         # 59 tests
+python -m pytest                         # 88 tests
 ```
 `uv pip install -e .` on its own does **not** use the lock file; it resolves the newest compatible versions.
 
@@ -105,6 +112,7 @@ python -m preference_lab.demo                               # five-minute demo f
 python -m preference_lab.test_analysis                      # recompute test metrics from saved predictions (prints only)
 python -m preference_lab.test_analysis --check-against runs/test-results/test_metrics.json
 python -m preference_lab.agent --scripted --name env-scripted-check   # tool-environment harness check, no model
+python3 web/generate_data.py --check                        # the dashboard data matches the saved results
 ```
 
 ## Retrain (writes new weights; times measured on the M4)

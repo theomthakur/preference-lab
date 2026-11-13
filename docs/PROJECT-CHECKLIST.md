@@ -4,7 +4,7 @@ Tick items as they are finished. "Heat" is how hard the item works the laptop.
 
 ## Done
 - [x] Environment, pinned versions, benchmark
-- [x] Task spec, rule oracle, strict verifier, tests (59 at the end of the review pass)
+- [x] Task spec, rule oracle, strict verifier, tests (88 after the dashboard pass)
 - [x] Generator, grouped splits, leakage audit
 - [x] Base baseline, SFT (1 and 5 epochs), clean DPO, corrupted DPO, all evaluated on validation
 - [x] Preference pairs, clean and 20% corrupted
