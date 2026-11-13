@@ -7,13 +7,13 @@
 - Shared evaluator, base, SFT (1 and 5 epochs), DPO clean, DPO corrupted, GRPO: validation results
 - Read-only tool environment with traces; 10 scripted trajectories; real-model episodes on 20 validation cases
 - Frozen held-out test, run once for all five models, with intervals and paired comparisons
+- Clean-checkout verification: fresh clone, 43 tests pass, audit clean
 - RESULTS.md, DATA-CARD.md, MODEL-CARD.md, WALKTHROUGH.md, demo script, architecture diagram in the README
 
 ## Incomplete
 - Trained multi-turn tool use (the plan's gated step was not reached)
 - Real-model tool episodes beyond 20 validation cases
 - Multi-seed runs (one seed only)
-- Clean-checkout verification (see below)
 
 ## Optional, not done
 - Prompt-injection robustness slice
