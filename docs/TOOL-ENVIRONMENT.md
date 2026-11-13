@@ -34,6 +34,6 @@ The first real runs used a parser that rejected any reply with two calls in it, 
 
 With the fixed parser, and the format example added to the prompt (labelled as an example, not about this case):
 - Base model (`runs/env-base-v2`): 0 of 20 correct. 16 episodes ran the full policy, ticket, finish sequence, and 4 looped on the ticket tool and ran out of budget.
-- SFT model (`runs/env-sft-v2`): see the summary file. Its results are reported as they came out.
+- SFT model (`runs/env-sft-v2`): 0 of 20 correct. All 20 episodes ran the full policy, ticket, finish sequence, so the protocol works for it too. Its answers were wrong: 13 wrong action, 7 wrong evidence.
 
 The earlier table (0 of 20 for both models) was produced under the broken parser and should be read as a harness failure, not as a model result.
