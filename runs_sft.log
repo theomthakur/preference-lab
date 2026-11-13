@@ -1,0 +1,11 @@
+W1113 16:10:42.893000 17457 .venv/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/redirects.py:35] NOTE: Redirects are currently not supported in MacOs.
+Loading weights:   0%|          | 0/290 [00:00<?, ?it/s]Loading weights:   0%|          | 1/290 [00:00<02:20,  2.06it/s]Loading weights: 100%|██████████| 290/290 [00:00<00:00, 592.99it/s]
+/Users/theomthakur/Documents/Projects/preference-lab/.venv/lib/python3.12/site-packages/transformers/modeling_utils.py:3303: FutureWarning: `is_gradient_checkpointing` is deprecated and will be removed in v6. Use `is_activation_checkpointing` instead.
+  warnings.warn(
+step 1/50 loss 0.6060 grad_norm 8.986
+step 10/50 loss 0.3718 grad_norm 1.570
+step 20/50 loss 0.3102 grad_norm 0.525
+step 30/50 loss 0.3319 grad_norm 0.870
+step 40/50 loss 0.2993 grad_norm 0.637
+step 50/50 loss 0.2963 grad_norm 0.551
+{"optimizer_steps": 50, "seconds": 110.0, "tokens_seen": 93004, "device": "mps", "trainable_params": 4399104, "param_l2_change": 1.7559844255447388, "mps_peak_gb": 5.73}

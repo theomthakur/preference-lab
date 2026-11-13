@@ -1,0 +1,209 @@
+{
+  "overall": {
+    "n": 200,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.35,
+    "evidence_rate": 0.01
+  },
+  "label_ACCEPT": {
+    "n": 68,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.9852941176470589,
+    "evidence_rate": 0.0
+  },
+  "label_DENY": {
+    "n": 66,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.045454545454545456,
+    "evidence_rate": 0.015151515151515152
+  },
+  "label_HOLD": {
+    "n": 66,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.0,
+    "evidence_rate": 0.015151515151515152
+  },
+  "template_0": {
+    "n": 64,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.375,
+    "evidence_rate": 0.015625
+  },
+  "template_1": {
+    "n": 71,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.30985915492957744,
+    "evidence_rate": 0.0
+  },
+  "template_2": {
+    "n": 65,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.36923076923076925,
+    "evidence_rate": 0.015384615384615385
+  },
+  "novel_values": {
+    "n": 0
+  },
+  "seen_values": {
+    "n": 200,
+    "correct": 0,
+    "correct_rate": 0.0,
+    "valid_rate": 1.0,
+    "format_rate": 1.0,
+    "action_rate": 0.35,
+    "evidence_rate": 0.01
+  },
+  "rules": {
+    "faulty_regardless_of_opened": {
+      "n": 2,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 1.0,
+      "evidence_rate": 0.0
+    },
+    "final_sale": {
+      "n": 7,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.0
+    },
+    "in_window": {
+      "n": 21,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 1.0,
+      "evidence_rate": 0.0
+    },
+    "in_window_unopened": {
+      "n": 16,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 1.0,
+      "evidence_rate": 0.0
+    },
+    "late_but_faulty": {
+      "n": 21,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 1.0,
+      "evidence_rate": 0.0
+    },
+    "late_fault_unknown": {
+      "n": 19,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.0
+    },
+    "late_not_faulty": {
+      "n": 10,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.1,
+      "evidence_rate": 0.0
+    },
+    "no_receipt": {
+      "n": 12,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.08333333333333333,
+      "evidence_rate": 0.0
+    },
+    "opened_fault_unknown": {
+      "n": 5,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.0
+    },
+    "opened_faulty": {
+      "n": 8,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.875,
+      "evidence_rate": 0.0
+    },
+    "opened_not_faulty": {
+      "n": 4,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.0
+    },
+    "opened_unknown": {
+      "n": 7,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.0
+    },
+    "receipt_unknown": {
+      "n": 35,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.0,
+      "evidence_rate": 0.02857142857142857
+    },
+    "too_late": {
+      "n": 33,
+      "correct": 0,
+      "correct_rate": 0.0,
+      "valid_rate": 1.0,
+      "format_rate": 1.0,
+      "action_rate": 0.030303030303030304,
+      "evidence_rate": 0.030303030303030304
+    }
+  },
+  "predicted_actions": {
+    "ACCEPT": 193,
+    "DENY": 7
+  }
+}

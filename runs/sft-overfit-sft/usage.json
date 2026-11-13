@@ -1,0 +1,13 @@
+{
+  "rows": 8,
+  "new_tokens": 164,
+  "seconds": 2.2,
+  "per_row_s": 0.273,
+  "device": "mps",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "adapter": "runs/sft-overfit/adapter",
+  "max_new": 96,
+  "batch": 16,
+  "mps_peak_gb": 2.89
+}

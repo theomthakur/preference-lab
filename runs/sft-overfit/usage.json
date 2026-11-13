@@ -1,0 +1,9 @@
+{
+  "optimizer_steps": 30,
+  "seconds": 94.6,
+  "tokens_seen": 54450,
+  "device": "mps",
+  "trainable_params": 4399104,
+  "param_l2_change": 1.8834799528121948,
+  "mps_peak_gb": 12.15
+}
