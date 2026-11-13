@@ -32,7 +32,7 @@
 - Retraining from scratch on another machine has not been verified to give the same numbers. The trained weights are not in GitHub.
 - Linux, CUDA and CPU were not tested. The lock file was produced on macOS arm64.
 - Known housekeeping: `src/preference_lab.egg-info/` is tracked in git and changes when the package is installed. Untracking it is proposed, not done.
-- An untracked `web/` folder (a viewer with `index.html` and `data.json`) exists in the working folder. It was not created in this pass, is not committed, and was not reviewed.
+- A read-only dashboard (`web/`, `vercel.json`) was committed by a separate tool session while this review was running (commit `b4e4207`). It was not created or reviewed in this pass. Its `data.json` is derived from saved results and has not been checked against `test_metrics.json`. This pass made no deployment.
 
 ## Optional, not done
 - Prompt-injection robustness slice
