@@ -61,3 +61,7 @@ def test_verifier_tolerates_json_inside_text_but_scores_by_content():
     r = verify('Sure! {"action": "DENY", "evidence": ["L1"]} thanks', "DENY", ["L1"])
     assert r["correct"]
     assert parse_answer("no json here") is None
+
+def test_correct_action_without_evidence_is_visible_but_not_correct():
+    r = verify('{"action": "DENY"}', "DENY", ["L1"])
+    assert r["action_ok"] and r["valid"] and not r["format_ok"] and not r["evidence_ok"] and not r["correct"]

@@ -83,7 +83,8 @@ def decide(p: Policy, t: Ticket) -> tuple[str, frozenset[str], str]:
 
 def parse_answer(text: str) -> dict | None:
     """Parse the model output. Accepts a bare JSON object, or one JSON object inside surrounding text.
-    Returns None when no valid {"action": ..., "evidence": [...]} object is present."""
+    Returns None unless the object has a string "action". "evidence" is returned as a list of strings when well formed,
+    otherwise None (so a missing or malformed evidence list is visible without hiding a correct action)."""
     text = (text or "").strip()
     cands = [text]
     a, b = text.find("{"), text.rfind("}")
@@ -94,20 +95,22 @@ def parse_answer(text: str) -> dict | None:
             obj = json.loads(c)
         except Exception:
             continue
-        if isinstance(obj, dict) and isinstance(obj.get("action"), str) and isinstance(obj.get("evidence"), list) \
-                and all(isinstance(x, str) for x in obj["evidence"]):
-            return obj
+        if isinstance(obj, dict) and isinstance(obj.get("action"), str):
+            ev = obj.get("evidence")
+            ok = isinstance(ev, list) and all(isinstance(x, str) for x in ev)
+            return {"action": obj["action"], "evidence": ev if ok else None}
     return None
 
 
 def verify(text: str, label: str, required_ids: list[str]) -> dict:
-    """Primary correctness: 1 only for valid output, correct action AND exactly the required evidence ids.
-    Format validity, action correctness and evidence correctness are also reported separately."""
+    """Primary correctness ("correct"): valid output, correct action AND exactly the required evidence ids.
+    Also reported separately: format_ok (action plus a well-formed evidence list), action_ok, evidence_ok."""
     obj = parse_answer(text)
     if obj is None:
-        return {"valid": False, "action_ok": False, "evidence_ok": False, "correct": False, "action": None}
+        return {"valid": False, "format_ok": False, "action_ok": False, "evidence_ok": False, "correct": False, "action": None}
     action = obj["action"].strip().upper()
+    ev = obj["evidence"]
     action_ok = action == label
-    evidence_ok = set(obj["evidence"]) == set(required_ids) and len(obj["evidence"]) == len(set(obj["evidence"]))
-    return {"valid": action in ACTIONS, "action_ok": action_ok, "evidence_ok": evidence_ok,
-            "correct": action_ok and evidence_ok, "action": action}
+    evidence_ok = ev is not None and set(ev) == set(required_ids) and len(ev) == len(set(ev))
+    return {"valid": action in ACTIONS, "format_ok": ev is not None and action in ACTIONS, "action_ok": action_ok and action in ACTIONS,
+            "evidence_ok": evidence_ok, "correct": action_ok and evidence_ok, "action": action}
