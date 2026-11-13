@@ -1,0 +1,9 @@
+{
+  "categories": {
+    "budget_exceeded": 20
+  },
+  "episodes": 20,
+  "mean_calls": 4.0,
+  "over_budget_rate": 1.0,
+  "strict_correct": 0
+}

@@ -14,7 +14,7 @@ Tick items as they are finished. "Heat" is how hard the item works the laptop.
 - [x] 3. Hand-review 40 examples (40 of 40 agree)
 
 ## To do
-- [ ] 4. Tool environment, traces, tests, scripted runs, real-model attempts (1.5-2 h, heat: light)
+- [x] 4. Tool environment, traces, tests, scripted runs, real-model attempts (done: 42 tests, 10/10 scripted, base 0/20 and SFT 0/20 on tool episodes; see docs/TOOL-ENVIRONMENT.md)
 - [ ] 5. GRPO speed test, then bounded real run (45-90 min, heat: HEAVY, needs Om's OK first)
 - [ ] 6. Evaluate GRPO on validation (10 min, heat: light)
 - [ ] 7. Freeze configs, run the held-out test once, with intervals (30 min, heat: medium, needs Om's OK first)

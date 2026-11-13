@@ -1,0 +1,15 @@
+{
+  "categories": {
+    "budget_exceeded": 2,
+    "malformed_action": 2,
+    "task_success": 2,
+    "timeout": 1,
+    "tool_exception": 1,
+    "wrong_action": 1,
+    "wrong_evidence": 1
+  },
+  "episodes": 10,
+  "mean_calls": 2.5,
+  "over_budget_rate": 0.2,
+  "strict_correct": 2
+}

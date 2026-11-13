@@ -2,7 +2,7 @@
 
 A small, reproducible experiment in post-training a language model: synthetic data, a rule-based answer checker, supervised fine-tuning (SFT), preference tuning (DPO), and a shared evaluation. It runs on a laptop (Apple M4, 16 GB) with a 0.5B-parameter model.
 
-**Status: work in progress.** Data, baseline, SFT and DPO are done and measured on a validation set. GRPO, the tool environment, the clean-versus-corrupted comparison write-up and the final held-out test are not done yet. Nothing here is a claim about frontier-scale training. All data is synthetic.
+**Status: work in progress.** Data, baseline, SFT and DPO are done and measured on a validation set. GRPO, trained tool use and the final held-out test are not done yet. A read-only tool environment is built and tested, and the base and SFT models score 0 of 20 on it (see docs/TOOL-ENVIRONMENT.md). Nothing here is a claim about frontier-scale training. All data is synthetic.
 
 ## The task
 
@@ -62,7 +62,8 @@ python -m preference_lab.pairs           # clean and corrupted preference pairs
 python -m preference_lab.evaluate --split val --name base
 python -m preference_lab.sft --name sft --epochs 5 --batch 8 --micro 2
 python -m preference_lab.dpo --name dpo-clean --pairs data/pairs_clean.jsonl
-python -m pytest                         # 35 tests
+python -m pytest                         # 42 tests
+python -m preference_lab.agent --scripted --name env-scripted   # tool-environment harness check
 ```
 
 On a 16 GB Mac, set `PYTORCH_MPS_HIGH_WATERMARK_RATIO=0.6 PYTORCH_MPS_LOW_WATERMARK_RATIO=0.4` to cap GPU memory. Each run writes its config, log, predictions (failures included) and measured usage to `runs/<name>/`.
