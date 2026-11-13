@@ -32,7 +32,7 @@
 - Retraining from scratch on another machine has not been verified to give the same numbers. The trained weights are not in GitHub.
 - Linux, CUDA and CPU were not tested. The lock file was produced on macOS arm64.
 - Known housekeeping: `src/preference_lab.egg-info/` is tracked in git and changes when the package is installed. Untracking it is proposed, not done.
-- Dashboard: see the dashboard pass below. Not verified there: a real Vercel deployment, other browsers, screen readers, real touch devices.
+- Dashboard: see the dashboard pass below and the verification record in `docs/ARTIFACTS.md`. Not verified: a real Vercel deployment, browsers other than Chromium, screen readers, real touch devices.
 
 ## Dashboard pass (what changed and why)
 - Chart footnote now names both DPO variants (it said only "clean"). Each bar shows the saved 95% group-bootstrap interval on a fixed axis, with a plain explanation of the zero-success case (the bootstrap interval is always [0, 0]; an exact upper bound is shown as supplementary arithmetic, labelled as not part of the saved metrics).
@@ -44,6 +44,7 @@
 - Overview, System design and Presentation remain separate tabs. Repeated copy was removed (the stat strip, the decorative hero illustration, duplicated caveats, one design note); the presentation stays at five slides.
 - `vercel.json` adds security headers including a strict Content-Security-Policy; `.vercelignore` keeps sources and weights out of a CLI upload.
 - No saved prediction, metric or test file was changed: SHA-256 hashes of `runs/test-results/*` and `data/test.jsonl` were identical before and after.
+- Verified in a clean checkout of commit `9b4ccdd` and in a real browser (43 checks, 0 failures). What was not verified is listed in `docs/ARTIFACTS.md`; the main gaps are a real Vercel deployment, Firefox and Safari, and screen readers.
 
 ## Optional, not done
 - Prompt-injection robustness slice

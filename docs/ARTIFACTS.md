@@ -64,3 +64,27 @@ Evaluating any trained model (SFT, DPO, GRPO) on validation, and running the too
 
 ## Verification record (review pass)
 Checked on commit `f2c7392` in a temporary clone of the committed repository: lock-file installs (uv and pip) matched the 53 pinned packages; 59 tests passed; the audit was clean; `splits build` and `pairs` reproduced the tracked data byte for byte; `demo`, `test_analysis --check-against`, `agent --scripted` reproduced the tracked outputs; `grpo` failed fast without weights; `final_test` refused to run. Everything marked "can run" above was exercised this way.
+
+## Dashboard verification record (commit `9b4ccdd`, in a temporary clone of the committed repository)
+
+**Verified**
+- Pinned install from the lock file; 88 tests pass; `python3 web/generate_data.py --check` with system Python (standard library only) reports `data.json` byte-identical to a fresh build and writes nothing; the tracked tree stays clean. SHA-256 hashes of `runs/test-results/*` and `data/test.jsonl` were identical before and after all dashboard work.
+- A real browser (Brave, which is Chromium, on macOS), driven by puppeteer-core, loading the page from a local server that applies `vercel.json`'s headers including the strict Content-Security-Policy. 43 checks, 0 failures, repeated against the fresh clone:
+  - no console errors and no Content-Security-Policy violations;
+  - bar values, interval geometry, counts and the zero-success note for all 3 wording views and 5 models, recomputed from the raw predictions, not from the saved metrics;
+  - the paired table, the findings and the slide numbers match the data, and nothing claims DPO or GRPO improved on SFT;
+  - all 15 filter combinations, and all 4,000 case-by-model renderings (evidence lines, check marks, saved output, verdict marks, reference answer, `aria-pressed`, same-case-other-wording);
+  - keyboard: skip link; focus retained after Enter or Space on model tabs, case items, slide dots and at the end of the pager and the deck; arrow keys on the wording radios and slides; type-ahead in the filter select; a 3 px focus ring on nine kinds of control;
+  - views: nav links, browser Back, direct and unknown hash links, page titles, focus moved to headings;
+  - reduced motion (emulated): scroll calls use `auto`; without the preference they may be smooth;
+  - mobile: selecting a case moves focus to it and scrolls it into view, and the back button returns focus to the list;
+  - 320, 360, 390, 768, 1024, 1280 and 1440 px, each of the 3 views: no horizontal scrolling, no visible text under 12 px, every visible text element meeting WCAG AA contrast, every interactive target at least 44 px (links inside running text excluded);
+  - failure states: `data.json` returning 404, and opening `index.html` from disk.
+- Problems found by this testing and fixed: the presentation controls overflowed the deck on 320 and 360 px screens, and the footnote, intervals, focus and contrast issues listed in `docs/FINAL-STATUS.md`. One test failure was my test (on macOS an arrow key opens a closed select instead of changing it), so that check now uses type-ahead.
+
+**Not verified**
+- A real Vercel deployment. The Vercel command-line tool is not installed and the connector is not authorized. `vercel.json` was tested only as valid JSON and through a local server that applies its headers; Vercel itself was not run. The effect of `.vercelignore` was not tested, only its contents.
+- Any browser other than Chromium (Firefox and Safari were not run).
+- Screen readers (VoiceOver, NVDA, JAWS). ARIA attributes, status text and focus order were checked structurally, but nothing was heard.
+- Real touch devices (mobile was emulated), browser zoom and text-spacing overrides, forced-colors mode, and the page without Google Fonts (the fallback fonts were not inspected visually).
+- Contrast of graphics and control borders was checked for the design tokens, not element by element in every state (for example hover).
