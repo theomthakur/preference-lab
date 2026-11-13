@@ -1,0 +1,14 @@
+{
+  "git_commit": "a1a3e2e0f27d6bf977973b643a61cb2cabed3a32",
+  "test_file_sha": "6bbe75415a8eff05",
+  "adapters": {
+    "sft": "d5cea1f29f68c99f",
+    "dpo_clean": "0cf3357fef4541ce",
+    "dpo_corrupt": "a8501bf96a5fae71",
+    "grpo": "52193d7bfd206438"
+  },
+  "decoding": {
+    "greedy": true,
+    "max_new": 96
+  }
+}

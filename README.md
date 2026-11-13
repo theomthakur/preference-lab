@@ -2,7 +2,7 @@
 
 A small, reproducible experiment in post-training a language model: synthetic data, a rule-based answer checker, supervised fine-tuning (SFT), preference tuning (DPO), and a shared evaluation. It runs on a laptop (Apple M4, 16 GB) with a 0.5B-parameter model.
 
-**Status: work in progress.** Data, baseline, SFT and DPO are done and measured on a validation set. GRPO, trained tool use and the final held-out test are not done yet. A read-only tool environment is built and tested, and the base and SFT models score 0 of 20 on it (see docs/TOOL-ENVIRONMENT.md). Nothing here is a claim about frontier-scale training. All data is synthetic.
+**Status: complete for the planned scope, with negative results.** Data, models, the tool environment and the one-time held-out test are done. Preference tuning and GRPO did not beat SFT. Trained tool use was not achieved. See RESULTS.md and docs/FINAL-STATUS.md. A read-only tool environment is built and tested, and the base and SFT models score 0 of 20 on it (see docs/TOOL-ENVIRONMENT.md). Nothing here is a claim about frontier-scale training. All data is synthetic.
 
 ## The task
 
@@ -26,6 +26,8 @@ A small rule oracle (`oracle.py`) decides the right answer. A score of "correct"
 | DPO from the SFT model (clean pairs) | 29 / 200 (14.5%) | 61.5% | 18% |
 | DPO from the SFT model (20% flipped pairs) | 26 / 200 (13.0%) | 64.5% | 14% |
 | GRPO from the SFT model (32 updates) | 23 / 200 (11.5%) | 59.5% | 15.5% |
+
+Held-out test results (one run, all models frozen first): see RESULTS.md. The best model is about 12% strict correct, and no preference or RL step beats SFT beyond noise.
 
 Read this carefully:
 - The base model answers DENY about 80% of the time and never cites evidence.
@@ -52,6 +54,30 @@ Scenario generator + independent rule oracle
 - Preference pairs use hard negatives (wrong action, missing, extra or made-up evidence), all valid JSON.
 - The cross-check: a second, separately written oracle agrees with the first on every generated row, and a hand review of 40 rows (`docs/HAND-REVIEW.md`) found 40 of 40 agreements.
 
+
+## Architecture
+
+```mermaid
+flowchart TD
+  G[Rule oracle + scenario generator] --> S[Grouped splits: sft / pool / val / test]
+  S --> SFT[SFT, LoRA, completion-only loss]
+  S --> PAIRS[Preference pairs from pool; clean and 20% flipped]
+  SFT --> M[Merged SFT weights]
+  SFT --> DPO[DPO, frozen SFT reference]
+  PAIRS --> DPO
+  M --> GRPO[GRPO, verifier reward, KL to SFT]
+  V[Verifier: strict correctness] --> GRPO
+  SFT --> EVAL[Shared frozen evaluator]
+  DPO --> EVAL
+  GRPO --> EVAL
+  BASE[Base model] --> EVAL
+  EVAL --> RES[Validation metrics, then one held-out test with intervals]
+  ENV[Read-only tool environment with traces] --> EVAL
+```
+
+Track A (answer directly): SFT, DPO and GRPO are trained and tested this way.
+Track B (tools): base and SFT are run through the tool environment; trained tool use is not achieved.
+
 ## Run it
 
 ```bash
@@ -60,6 +86,7 @@ uv pip install -e .                      # pinned versions are in requirements.l
 python -m preference_lab.doctor          # hardware and speed check
 python -m preference_lab.splits build    # data/ and a leakage audit
 python -m preference_lab.pairs           # clean and corrupted preference pairs
+python -m preference_lab.demo                  # five-minute demo from saved artifacts
 python -m preference_lab.evaluate --split val --name base
 python -m preference_lab.sft --name sft --epochs 5 --batch 8 --micro 2
 python -m preference_lab.dpo --name dpo-clean --pairs data/pairs_clean.jsonl
