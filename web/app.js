@@ -34,9 +34,21 @@ const slides = [
   {kicker:'01 / THE QUESTION',title:'Can preference training improve a small model?',body:'We use a fictional returns workflow to study a practical question: can a model make the right decision and point to the facts that support it?',note:'A small learning experiment · synthetic data'},
   {kicker:'02 / THE TASK',title:'A decision is only as useful as its evidence.',body:'Given a store policy and a customer request, the model must return ACCEPT, DENY or HOLD and cite the exact lines that justify its choice.',note:'Strict pass = correct action + exact evidence'},
   {kicker:'03 / THE APPROACH',title:'One task. Several training paths.',body:'Start with Qwen2.5-0.5B-Instruct. Compare the base model with supervised fine-tuning, DPO on preference pairs, and GRPO with verifier rewards.',note:'DPO and GRPO start from the SFT model'},
-  {kicker:'04 / THE RESULT',title:'SFT helped. The rest is uncertain.',body:'On the held-out test, SFT was correct on 11.75% of rows versus 0% for the base. DPO and GRPO did not establish a clear gain over SFT.',note:'800 rows · 400 groups · one training seed'},
+  {kicker:'04 / THE RESULT',title:'SFT helped. The rest is uncertain.',body:'GRPO had the highest observed strict score at 12.0%, versus 11.75% for SFT and 0% for the base. The difference between GRPO and SFT is not conclusive.',note:'800 rows · 400 groups · one training seed'},
   {kicker:'05 / THE TAKEAWAY',title:'An honest result is still a useful result.',body:'Inspect failures, keep the limitations visible, and design the next experiment before making stronger claims. Tool-use training was not achieved.',note:'Synthetic labels · small model · no production claims'}
 ];
 let slideIndex=0;
 function renderSlide(){const slide=slides[slideIndex];el('slide-counter').textContent=String(slideIndex+1).padStart(2,'0')+' / 05';el('slide-body').innerHTML=`<div class="slide-kicker">${slide.kicker}</div><h3>${slide.title}</h3><p>${slide.body}</p><div class="slide-note">✳ &nbsp; ${slide.note}</div>`;el('slide-dots').innerHTML=slides.map((_,i)=>`<button class="${i===slideIndex?'active':''}" data-slide="${i}" aria-label="Go to slide ${i+1}" aria-current="${i===slideIndex?'true':'false'}"></button>`).join('');el('slide-prev').disabled=slideIndex===0;el('slide-next').disabled=slideIndex===slides.length-1;el('slide-dots').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{slideIndex=Number(b.dataset.slide);renderSlide()}))}
 el('slide-prev').addEventListener('click',()=>{slideIndex=Math.max(0,slideIndex-1);renderSlide()});el('slide-next').addEventListener('click',()=>{slideIndex=Math.min(slides.length-1,slideIndex+1);renderSlide()});renderSlide();
+
+// Navigation changes views rather than stacking every section on one long page.
+const viewSections={overview:['.hero','.strip','.results','.explore-section'], 'system-design':['.architecture-section'], presentation:['.presentation-section']};
+function showView(){
+ const hash=location.hash.slice(1)||'overview';
+ const view=hash==='explore'?'overview':(viewSections[hash]?hash:'overview');
+ for(const [name,selectors] of Object.entries(viewSections)) for(const selector of selectors) document.querySelector(selector).hidden=name!==view;
+ document.querySelectorAll('[data-view-link]').forEach(a=>{if(a.dataset.viewLink===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ if(hash==='explore') requestAnimationFrame(()=>document.getElementById('explore').scrollIntoView());
+ else window.scrollTo({top:0,behavior:'auto'});
+}
+window.addEventListener('hashchange',showView);showView();
