@@ -45,3 +45,7 @@ def test_malformed_output_never_crashes():
 
 def test_parse_takes_json_inside_text():
     assert parse('Sure {"tool": "get_ticket", "ticket_id": "ticket-current"} ok')["tool"] == "get_ticket"
+
+def test_parse_uses_first_object_and_ignores_extra_calls():
+    two = '{"tool": "get_policy", "policy_id": "return-policy-v1"}, {"tool": "get_ticket", "ticket_id": "ticket-current"}'
+    assert parse(two)["tool"] == "get_policy"

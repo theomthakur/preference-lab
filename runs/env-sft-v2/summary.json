@@ -1,0 +1,10 @@
+{
+  "categories": {
+    "wrong_action": 13,
+    "wrong_evidence": 7
+  },
+  "episodes": 20,
+  "mean_calls": 3.0,
+  "over_budget_rate": 0.0,
+  "strict_correct": 0
+}

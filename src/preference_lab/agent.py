@@ -21,19 +21,24 @@ SYSTEM = (
     "You have at most 3 tool calls in total, and finish counts as one. Reply with exactly one JSON object per turn, nothing else. "
     f'Tools: {{"tool": "get_policy", "policy_id": "{POLICY_ID}"}}, {{"tool": "get_ticket", "ticket_id": "{TICKET_ID}"}}, '
     '{"tool": "finish", "action": "ACCEPT" | "DENY" | "HOLD", "evidence": ["L..", ...]}. '
-    "Evidence lists the line ids that decide the answer. Use HOLD only when a needed fact is unknown."
+    "Evidence lists the line ids that decide the answer. Use HOLD only when a needed fact is unknown. "
+    "Format example only (the action and ids here are NOT about this case): "
+    f'{{"tool": "get_policy", "policy_id": "{POLICY_ID}"}} then {{"tool": "get_ticket", "ticket_id": "{TICKET_ID}"}} '
+    'then {"tool": "finish", "action": "ACCEPT", "evidence": ["L1"]}.'
 )
 TASK = "Decide this return request. Fetch the policy and the ticket, then finish."
 
 
 def parse(raw):
+    """Take the FIRST complete JSON object in the reply. Anything after it (for example a second call in the same reply)
+    is ignored, and the turn uses only the first call. This rule is fixed and applies to every model."""
     if not raw:
         return None
-    s = raw.strip(); a, b = s.find("{"), s.rfind("}")
-    if a == -1 or b <= a:
+    s = raw.strip(); a = s.find("{")
+    if a == -1:
         return None
     try:
-        obj = json.loads(s[a:b + 1])
+        obj, _ = json.JSONDecoder().raw_decode(s[a:])
     except Exception:
         return None
     return obj if isinstance(obj, dict) else None

@@ -28,3 +28,12 @@ These are valid results. Neither model learned tool use, and this run does not e
 - A larger real-model run. Twenty cases are a small sample.
 
 Results are in `runs/env-base/`, `runs/env-sft/` and `runs/env-scripted/`.
+
+## Protocol fix (13 Nov, same session)
+The first real runs used a parser that rejected any reply with two calls in it, so 20 of 20 episodes ended as malformed before any tool ran. The base model had copied the format example and put two calls in one reply. The parser now takes the first complete call in a reply and ignores the rest. That rule is fixed and applies to every model, and a test covers it.
+
+With the fixed parser, and the format example added to the prompt (labelled as an example, not about this case):
+- Base model (`runs/env-base-v2`): 0 of 20 correct. 16 episodes ran the full policy, ticket, finish sequence, and 4 looped on the ticket tool and ran out of budget.
+- SFT model (`runs/env-sft-v2`): see the summary file. Its results are reported as they came out.
+
+The earlier table (0 of 20 for both models) was produced under the broken parser and should be read as a harness failure, not as a model result.
