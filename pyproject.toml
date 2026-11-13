@@ -1,0 +1,13 @@
+[project]
+name = "preference-lab"
+version = "0.1.0"
+description = "Small, reproducible post-training experiment: synthetic data, SFT, DPO, GRPO, verifiers, evaluation."
+requires-python = ">=3.12,<3.13"
+dependencies = ["torch", "transformers", "trl", "peft", "datasets", "accelerate", "pyyaml", "numpy", "pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
