@@ -1,0 +1,13 @@
+{
+  "rows": 200,
+  "new_tokens": 4421,
+  "seconds": 38.2,
+  "per_row_s": 0.191,
+  "device": "mps",
+  "model": "Qwen/Qwen2.5-0.5B-Instruct",
+  "revision": "7ae557604adf67be50417f59c2c2f167def9a775",
+  "adapter": "runs/dpo-clean/adapter",
+  "max_new": 96,
+  "batch": 16,
+  "mps_peak_gb": 2.93
+}

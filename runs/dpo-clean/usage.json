@@ -1,0 +1,1 @@
+{"optimizer_steps": 125, "seconds": 787.9, "tokens_seen": 467288, "device": "mps", "param_l2_change": 1.4515511989593506, "mps_peak_gb": 6.57}
