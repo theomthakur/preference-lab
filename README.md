@@ -1,5 +1,7 @@
 # Preference Lab
 
+**Live dashboard:** [preference-lab.vercel.app](https://preference-lab.vercel.app/)
+
 Preference Lab is a small experiment in teaching a language model to make decisions and explain them. Given a fictional store policy and a return request, the model must answer **accept, deny or hold** and cite the exact lines supporting its decision.
 
 The project explores supervised fine-tuning (SFT), preference tuning (DPO), reinforcement learning (GRPO), and how to evaluate their results honestly. The dashboard lets you explore saved answers without running a model.

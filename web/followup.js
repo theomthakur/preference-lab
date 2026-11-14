@@ -1,7 +1,10 @@
 /* The follow-up is a separate frozen experiment. Values come from its saved metrics. */
 fetch('./followup.json')
   .then(response => { if (!response.ok) throw new Error('Results unavailable'); return response.json(); })
-  .then(({metrics}) => {
+  .then(data => {
+    window.preferenceFollowup = data;
+    window.dispatchEvent(new Event('preference-followup-ready'));
+    const {metrics} = data;
     const m = metrics.overall, b = metrics.group_bootstrap;
     const pct = n => (n * 100).toFixed(2).replace(/\.?0+$/, '') + '%';
     const items = [

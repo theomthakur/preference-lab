@@ -144,28 +144,24 @@
       <h2 id="design-title" tabindex="-1">From a question to a result</h2>
       <p>The original 0.5B experiment compared SFT, DPO and GRPO. A separate 1.5B SFT continuation was later evaluated on newly generated frozen cases.</p>
     </div>
-    <div class="architecture">
-      <ol class="arch-flow">
-        <li><span class="arch-num">1</span><h3>Generate and split</h3><p>Synthetic policy scenarios with a rule oracle for the reference answer. Splits are by case, so no case appears in two splits.</p></li>
-        <li><span class="arch-num">2</span><h3>Train variants</h3><p>Fine-tune a 0.5B base model (SFT). Then try DPO on preference pairs and GRPO with a verifier reward, both starting from SFT.</p></li>
-        <li><span class="arch-num">3</span><h3>Score and inspect</h3><p>One checker grades the action and the exact evidence for every model. Saved predictions feed the paired comparisons.</p></li>
-      </ol>
-      <div class="arch-note"><span class="arch-badge">Separate track</span><p><b>Tool environment.</b> The base and SFT models were also run on 20 validation cases that needed tool calls. Both scored 0 of 20. Trained tool use was not achieved.</p></div>
+    <div class="research-board" aria-labelledby="pipeline-title">
+      <div class="board-heading"><div><p class="eyebrow">Architecture · two experiments</p><h3 id="pipeline-title">From synthetic cases to measured evidence</h3></div><span class="board-tag">READ-ONLY DASHBOARD</span></div>
+      <div class="board-flow" aria-label="Experiment data flow">
+        <article><span>01 / DATA</span><h4>Generate &amp; verify</h4><p>Rules create fictional policies and tickets. A deterministic oracle supplies the action and exact supporting lines.</p><small>Grouped splits · JSONL · leakage checks</small></article>
+        <span class="board-arrow" aria-hidden="true">→</span>
+        <article><span>02 / TRAIN</span><h4>Adapt the model</h4><p>Supervised examples train LoRA adapters. In the original study, DPO and GRPO start from the 0.5B SFT model.</p><small>Python · PyTorch · PEFT · TRL</small></article>
+        <span class="board-arrow" aria-hidden="true">→</span>
+        <article><span>03 / EVALUATE</span><h4>Score &amp; save</h4><p>Greedy model outputs are checked against the oracle. Predictions, scores and run metadata are preserved.</p><small>Action · evidence · strict match</small></article>
+        <span class="board-arrow" aria-hidden="true">→</span>
+        <article><span>04 / EXPLORE</span><h4>Inspect the record</h4><p>The static site reads saved results and cases. It does not call a model or modify experiment data.</p><small>Static JSON · browser · Vercel</small></article>
+      </div>
     </div>
-    <div class="stack-panel">
-      <h3>Tech stack</h3>
-      <dl class="stack-items">
-        <div><dt>Model</dt><dd>Qwen2.5-0.5B-Instruct</dd></div>
-        <div><dt>Training</dt><dd>Python, PyTorch, Transformers, TRL, PEFT (LoRA)</dd></div>
-        <div><dt>Evaluation</dt><dd>Python, JSONL, a rule-based verifier</dd></div>
-        <div><dt>Hardware</dt><dd>Apple M4, 16 GB, PyTorch MPS</dd></div>
-        <div><dt>Dashboard</dt><dd>Static HTML, CSS and JavaScript over one JSON file</dd></div>
-      </dl>
-    </div>
-    <div class="design-notes">
-      <article><h3>Why a rule oracle?</h3><p>It gives a repeatable reference answer. The task still reflects the assumptions written into its rules.</p></article>
-      <article><h3>Why paired evaluation?</h3><p>Every model answers the same cases, so differences can be compared case by case.</p></article>
-    </div>
+    <section class="research-section" aria-labelledby="tracks-title"><div class="research-heading"><span>01</span><div><h3 id="tracks-title">Two studies, kept separate</h3><p>They answer related questions but use different models and test sets.</p></div></div>
+      <div class="track-grid"><article class="track-card"><p class="eyebrow">ORIGINAL · 0.5B</p><h4>Does preference tuning help?</h4><p>Compare base, SFT, clean and corrupted DPO, and GRPO on the same held-out groups. SFT improved over base; DPO and GRPO did not establish a gain over SFT.</p><div class="track-meta"><b>400 groups</b><span>800 test rows · one seed</span></div></article><article class="track-card accent"><p class="eyebrow">FOLLOW-UP · 1.5B</p><h4>Does more SFT help this checkpoint?</h4><p>Continue the earlier adapter with SFT and pool groups. Select epoch 3 on validation, then evaluate it on new, fixed synthetic cases.</p><div class="track-meta"><b>48.25% strict</b><span>84.25% decision · 800 test rows</span></div></article></div>
+    </section>
+    <section class="research-section" aria-labelledby="contract-title"><div class="research-heading"><span>02</span><div><h3 id="contract-title">The evaluation contract</h3><p>Every score has a specific meaning and a boundary.</p></div></div><div class="contract-grid"><article><h4>What goes in</h4><p>A fictional policy and ticket, rendered with line IDs. The model returns an action and evidence IDs.</p></article><article><h4>What counts</h4><p>A strict pass needs the correct action and exactly the required evidence IDs. Action and evidence accuracy are reported separately.</p></article><article><h4>How to read it</h4><p>Examples in the same case group are related; intervals use a group bootstrap. One seed leaves training variance unmeasured.</p></article><article><h4>Where it stops</h4><p>Labels are synthetic. The new test uses the same generator and cannot establish production or real-world performance.</p></article></div></section>
+    <section class="research-section" aria-labelledby="stack-title"><div class="research-heading"><span>03</span><div><h3 id="stack-title">Implementation and runtime</h3><p>What was actually used, and what a fresh checkout contains.</p></div></div><div class="stack-panel"><dl class="stack-items"><div><dt>Models</dt><dd>Qwen2.5-0.5B-Instruct (original); Qwen2.5-1.5B-Instruct (follow-up)</dd></div><div><dt>Training</dt><dd>Python, PyTorch, Transformers, PEFT / LoRA; TRL in the original GRPO experiment</dd></div><div><dt>Evaluation</dt><dd>Rule oracle, JSONL predictions, grouped bootstrap; same strict checker</dd></div><div><dt>Compute</dt><dd>Apple M4 / MPS for the original; Colab Tesla T4 / CUDA for the follow-up</dd></div><div><dt>Dashboard</dt><dd>Static HTML, CSS and JavaScript; saved JSON results on Vercel</dd></div><div><dt>Artifacts</dt><dd>Code, synthetic cases, predictions and metrics are in GitHub. Adapter weights are stored separately.</dd></div></dl></div></section>
+    <section class="research-section" aria-labelledby="limits-title"><div class="research-heading"><span>04</span><div><h3 id="limits-title">Failure modes and next steps</h3><p>These results are a starting point for a better experiment.</p></div></div><div class="contract-grid"><article><h4>Evidence errors</h4><p>On the new test, action accuracy was 84.25%, but exact evidence was 50%. Inspect missing, extra and incorrect citations separately.</p></article><article><h4>Wording sensitivity</h4><p>Strict accuracy was 59.5% on familiar wording and 37% on held-out wording. Test more varied phrasing in a future study.</p></article><article><h4>Tool-use boundary</h4><p>The original base and SFT models scored 0/20 on the tool-environment validation cases. Trained tool use was not achieved.</p></article><article><h4>Next evaluation</h4><p>Develop changes using training and validation data, freeze the candidate, then use another unseen test. The current test has been inspected.</p></article></div><div class="research-links"><a href="https://github.com/theomthakur/preference-lab/blob/main/docs/FOLLOWUP-FROZEN-TEST.md">Read the follow-up record ↗</a><a href="https://github.com/theomthakur/preference-lab/blob/main/RESULTS.md">Original results and intervals ↗</a></div></section>
   </section>
 </div>
 

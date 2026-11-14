@@ -220,9 +220,9 @@ function buildSlides() {
   return [
     { kicker: 'The question', title: 'Can post-training make a small model decide well and show its evidence?', body: 'A fictional returns workflow tests one practical question: can a model choose ACCEPT, DENY or HOLD and point to the exact facts that support the choice?', note: 'A small learning experiment on synthetic data' },
     { kicker: 'The task', title: 'A decision is only as useful as its evidence.', body: 'Given a store policy and a customer ticket, the model returns an action and the line ids that justify it. A strict pass needs the right action and exactly the right evidence lines.', note: 'A rule oracle supplies the reference answer' },
-    { kicker: 'What was tried', title: 'One task, four training paths.', body: 'Start from Qwen2.5-0.5B-Instruct. Compare the untrained model with supervised fine-tuning (SFT), DPO on preference pairs (clean and with 20% of labels flipped), and GRPO with a verifier reward. DPO and GRPO start from SFT.', note: 'One training seed per method' },
+    { kicker: 'What was tried', title: 'One task, four approaches.', body: 'Start from Qwen2.5-0.5B-Instruct. Compare the untrained model with supervised fine-tuning (SFT), DPO on preference pairs (clean and with 20% of labels flipped), and GRPO with a verifier reward. DPO and GRPO start from SFT.', note: 'One training seed per method' },
     { kicker: 'What the test found', title: 'SFT helped. The rest is not clearly different.', body: d ? `On the held-out test SFT scored ${pct(sft.point)} against ${pct(base.point)} for the untrained model. DPO and GRPO were not clearly different from SFT. New wording was harder: SFT scored ${pct(seen)} on seen wording and ${pct(held)} on held-out wording.` : 'Saved results are not loaded, so no numbers are shown here.', note: d ? `${sft.n_rows} test rows from ${groupsIn('all_rows')} groups, scored once after the models were frozen` : 'Serve this folder over HTTP to load the results' },
-    { kicker: 'What is uncertain', title: 'An honest result is still a useful result.', body: 'One seed, a small model and synthetic labels limit what this shows. Tool-use training was not achieved. A fair next step is a stronger SFT start, several seeds per method, and a new validation set with a separately frozen test.', note: 'No claim that DPO or GRPO improved on SFT' }
+    { kicker: 'The follow-up', title: 'More SFT improved the development checkpoint.', body: window.preferenceFollowup ? `A separate 1.5B continuation achieved ${pct(window.preferenceFollowup.metrics.overall.action_rate)} decision accuracy and ${pct(window.preferenceFollowup.metrics.overall.correct_rate)} strict accuracy on a new synthetic test. Different model and test mean this is not a controlled comparison with the original study.` : 'A separate 1.5B SFT continuation was evaluated on a new synthetic test. See the overview for its saved results.', note: 'One seed · same synthetic generator · tool-use training not achieved' }
   ];
 }
 
@@ -281,3 +281,5 @@ fetch('./data.json').then(r => { if (!r.ok) throw Error(`HTTP ${r.status}`); ret
   renderGlance(); renderBars(); renderPaired(); applyFilters(false);
   slides = buildSlides(); renderSlide();
 }).catch(failed);
+
+window.addEventListener('preference-followup-ready', () => { slides = buildSlides(); renderSlide(); });
