@@ -1,5 +1,7 @@
 # Model card: Preference Lab checkpoints
 
+**Later 1.5B SFT follow-up:** A separate 800-row synthetic frozen test and its saved predictions are documented in [the follow-up record](docs/FOLLOWUP-FROZEN-TEST.md). Its adapter weights are not in this repository. Original-study details below remain historical.
+
 **Base:** Qwen/Qwen2.5-0.5B-Instruct, revision `7ae557604adf67be50417f59c2c2f167def9a775`, float32, run on Apple M4 (MPS).
 
 **Checkpoints (all LoRA adapters on the base, except GRPO which sits on the merged SFT model):**

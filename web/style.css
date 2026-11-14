@@ -238,3 +238,6 @@ footer { border-top: 1px solid var(--line); background: var(--white); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* Separate follow-up study; original comparison remains intact below. */
+.followup-results{padding-top:50px;padding-bottom:32px}.followup-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.followup-card{display:flex;flex-direction:column;gap:10px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px}.followup-card span{font-size:13px;font-weight:600;color:#405664}.followup-card strong{font:500 34px var(--serif);color:#263f50}.followup-card small,.followup-note{font-size:13px;line-height:1.6;color:#53666c}.followup-note{max-width:850px;margin-top:18px}@media(max-width:700px){.followup-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.followup-card{padding:16px}.followup-card strong{font-size:28px}}

@@ -1,5 +1,9 @@
 # Final status (13 Nov 2026, after the review pass)
 
+## Later follow-up
+- A separate 1.5B SFT continuation and new frozen synthetic test are recorded in `docs/FOLLOWUP-FROZEN-TEST.md`: 48.25% strict, 84.25% action. Original and follow-up results use different tests and are not a controlled comparison.
+- The dashboard reads its saved metrics separately; trained adapter weights remain outside GitHub.
+
 ## Completed and evaluated
 - Task spec, rule oracle, strict verifier
 - Generator, grouped splits, leakage audit (clean)

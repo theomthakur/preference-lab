@@ -1,5 +1,7 @@
 # Data card: return-policy decision set (generator v1.0)
 
+**Later 1.5B SFT follow-up:** A separate 800-row synthetic frozen test and its saved predictions are documented in [the follow-up record](docs/FOLLOWUP-FROZEN-TEST.md). Its adapter weights are not in this repository. Original-study details below remain historical.
+
 **Synthetic.** Every policy, ticket and rule is invented. Labels come from a rule oracle (`oracle.py`), not from human judgment, so they are as good as the written rules, which are a simplified model of return policy and not legal or business advice.
 
 ## What a row is

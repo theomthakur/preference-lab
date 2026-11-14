@@ -12,6 +12,7 @@
 <link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <link rel="stylesheet" href="./style.css">
 <script defer src="./app.js"></script>
+<script defer src="./followup.js"></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to main content</a>
@@ -36,7 +37,7 @@
     <div class="hero-copy">
       <p class="eyebrow">A small experiment in post-training</p>
       <h1 id="hero-title" tabindex="-1">Can we train for better answers?</h1>
-      <p class="lede">A 0.5B-parameter model learns to decide fictional return requests and to cite the exact lines that justify each decision. This page shows what the frozen test found, including what did not work.</p>
+      <p class="lede">A small post-training experiment: can a model decide fictional return requests and cite the evidence? Explore the original comparison and a later 1.5B follow-up.</p>
       <div class="hero-links">
         <a href="#explore" class="btn primary">Explore the saved answers</a>
         <a href="#system-design" class="btn ghost">How it works</a>
@@ -49,9 +50,15 @@
     </aside>
   </section>
 
+  <section class="wrap followup-results" aria-labelledby="followup-title">
+    <div class="section-heading"><p class="eyebrow">Latest experiment · 1.5B SFT</p><h2 id="followup-title">The follow-up result</h2><p>The selected epoch-3 model was tested on 400 new synthetic cases, each written two ways. Decision and evidence are measured separately.</p></div>
+    <div class="followup-grid" id="followup-results" aria-live="polite">Loading the saved follow-up results…</div>
+    <p class="followup-note">This test uses the same synthetic generator and one training seed. It is separate from the original 0.5B study below; their scores are not a controlled comparison. Evidence remains the main limitation.</p>
+  </section>
+
   <section class="wrap section results" id="results" aria-labelledby="results-title">
     <div class="section-heading">
-      <p class="eyebrow">The frozen test</p>
+      <p class="eyebrow">Original 0.5B experiment · frozen test</p>
       <h2 id="results-title" tabindex="-1">What did the held-out test find?</h2>
       <p>Strict accuracy: an answer passes only with the right action and exactly the right evidence lines. Every model saw the same test cases.</p>
     </div>
@@ -135,7 +142,7 @@
     <div class="section-heading">
       <p class="eyebrow">How it works</p>
       <h2 id="design-title" tabindex="-1">From a question to a result</h2>
-      <p>A small, reproducible pipeline. The held-out cases were scored once, after the models were frozen.</p>
+      <p>The original 0.5B experiment compared SFT, DPO and GRPO. A separate 1.5B SFT continuation was later evaluated on newly generated frozen cases.</p>
     </div>
     <div class="architecture">
       <ol class="arch-flow">

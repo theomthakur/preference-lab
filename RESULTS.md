@@ -1,5 +1,7 @@
 # Results
 
+**Later 1.5B follow-up:** A separate SFT continuation reached 48.25% strict accuracy and 84.25% action accuracy on a new 800-row synthetic frozen test. This is not a controlled comparison with the original 0.5B results below. See [the follow-up record](docs/FOLLOWUP-FROZEN-TEST.md).
+
 One seed, a 0.5B model on a laptop, a synthetic return-policy task. Read every number with that in mind.
 
 ## Held-out test (run once, 13 Nov 2026)

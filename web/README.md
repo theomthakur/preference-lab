@@ -1,6 +1,6 @@
 # Preference Lab dashboard
 
-A static, read-only site over the saved held-out results. It never runs a model, never changes a saved file, and every number it shows is derived from `data.json`, so the text cannot drift from the results.
+A static, read-only site over the saved held-out results. It never runs a model, never changes a saved file, and original-study numbers come from `data.json` and follow-up numbers come from `followup.json`, so the text cannot drift from the results.
 
 Three views, switched by the tabs (hash links): **Overview** (findings at a glance, the chart with 95% intervals and a seen vs held-out wording toggle, paired differences, and an explorer of the saved answers), **System design**, and **Presentation** (five slides, with left and right arrow keys).
 
@@ -38,3 +38,6 @@ It also records a SHA-256 of every source file inside `data.json`. A test (`test
 
 ## Deploying as a static site
 The root `vercel.json` serves this folder with security headers, including a strict Content-Security-Policy (no inline scripts or styles). `.vercelignore` keeps sources and model weights out of a CLI upload. The headers were tested locally with a server that applies `vercel.json`; **a real Vercel deployment has not been made or verified.**
+
+## Separate 1.5B follow-up
+`followup.json` contains the saved metrics and freeze metadata from `runs/followup-frozen-test/`. The original `data.json` and comparison are unchanged. The displayed follow-up is a separate experiment, not a paired comparison with the original models.

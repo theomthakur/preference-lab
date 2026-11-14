@@ -1,5 +1,7 @@
 # Artifacts: what is in GitHub, what is not, and what a fresh clone can run
 
+**Later 1.5B SFT follow-up:** A separate 800-row synthetic frozen test and its saved predictions are documented in [the follow-up record](FOLLOWUP-FROZEN-TEST.md). Its adapter weights are not in this repository. Original-study details below remain historical.
+
 ## In GitHub
 - **Code and tests:** `src/preference_lab/`, `tests/` (88 tests), `pyproject.toml`, `requirements.lock.txt`.
 - **Dashboard (static, read-only):** `web/` (`index.html`, `app.js`, `style.css`, `favicon.svg`, `generate_data.py`, `README.md`, and `data.json`, a 1.2 MB derived copy of the held-out cases, predictions and metrics with a SHA-256 of each source), plus `vercel.json` and `.vercelignore`. `data.json` is derived and checked against the saved files; the saved files stay authoritative.

@@ -1,0 +1,15 @@
+{
+  "selected_adapter_sha256": "d5476835c038bac6bf58caed16b7a670baf3f45dfa576e023fcb33dd0e81e59b",
+  "test_sha256": "bf193eb69b33738e53ed21f33de44560b851397b93a0a1d819cc1e07b4f6c53f",
+  "rows": 800,
+  "groups": 400,
+  "selection": "epoch 3 selected before generating/evaluating this test",
+  "design": "balanced actions; half known and half novel policy values; seen and held-out wording per group; same synthetic generator",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "decoding": "greedy",
+  "max_new_tokens": 128,
+  "dtype": "float16",
+  "gpu": "Tesla T4",
+  "started_utc": "2026-11-14T03:01:33.392849+00:00"
+}
