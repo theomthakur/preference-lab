@@ -1,0 +1,110 @@
+{
+ "n": 200,
+ "top": {
+  "wrong action": 134,
+  "right action, wrong evidence": 66
+ },
+ "evidence_detail": {
+  "some right, some wrong": 23,
+  "cited another real fact line": 232,
+  "cited a note line": 44,
+  "all required plus extra lines": 26,
+  "cited the superseded line": 16,
+  "none of the required lines": 17
+ },
+ "mean_evidence_overlap": 0.209,
+ "by_required_lines": {
+  "1": {
+   "n": 7,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "2": {
+   "n": 75,
+   "action": 0.16,
+   "strict": 0.0
+  },
+  "3": {
+   "n": 106,
+   "action": 0.406,
+   "strict": 0.0
+  },
+  "4": {
+   "n": 12,
+   "action": 0.333,
+   "strict": 0.0
+  }
+ },
+ "by_rule": {
+  "receipt_unknown": {
+   "n": 35,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "too_late": {
+   "n": 33,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "in_window": {
+   "n": 21,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "late_but_faulty": {
+   "n": 21,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "late_fault_unknown": {
+   "n": 19,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "in_window_unopened": {
+   "n": 16,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "no_receipt": {
+   "n": 12,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "late_not_faulty": {
+   "n": 10,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "opened_faulty": {
+   "n": 8,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "opened_unknown": {
+   "n": 7,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "final_sale": {
+   "n": 7,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "opened_fault_unknown": {
+   "n": 5,
+   "action": 0.0,
+   "strict": 0.0
+  },
+  "opened_not_faulty": {
+   "n": 4,
+   "action": 1.0,
+   "strict": 0.0
+  },
+  "faulty_regardless_of_opened": {
+   "n": 2,
+   "action": 0.0,
+   "strict": 0.0
+  }
+ }
+}

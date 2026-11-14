@@ -1,0 +1,8 @@
+{
+  "rows": 200,
+  "seconds": 98.4,
+  "per_row_s": 0.49,
+  "new_tokens": 7371,
+  "device": "mps",
+  "mps_peak_gb": 3.84
+}

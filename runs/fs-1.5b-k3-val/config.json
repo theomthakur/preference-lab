@@ -1,0 +1,25 @@
+{
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+  "dtype": "bfloat16",
+  "k": 3,
+  "example_row_ids": [
+    "g00040-t0",
+    "g00074-t0",
+    "g00170-t2"
+  ],
+  "example_rules": [
+    "late_but_faulty",
+    "too_late",
+    "opened_unknown"
+  ],
+  "example_labels": [
+    "ACCEPT",
+    "DENY",
+    "HOLD"
+  ],
+  "decoding": "greedy",
+  "max_new": 96,
+  "split": "val",
+  "training": "none"
+}
